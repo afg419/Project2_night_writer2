@@ -53,8 +53,31 @@ class TestNightWriter2 < Minitest::Test
     assert_equal true, night.capital?(b)
   end
 
+  def test_plaintext_char_to_braille_hash1
+    night = NightWriter2.new
+    a = 'a'
+    x = 'x'
+    f = 'f'
+    expected_a = { top:['0','.'] , mid:['.' ,'.'], bot:['.','.'] }
+    expected_x = { top:['0','0'] , mid:['.' ,'.'], bot:['0','0'] }
+    expected_f = { top:['0','0'] , mid:['0' ,'.'], bot:['.','.'] }
+    assert_equal  expected_a , night.plaintext_char_to_braille_hash(a)
+    assert_equal  expected_x , night.plaintext_char_to_braille_hash(x)
+    assert_equal  expected_f , night.plaintext_char_to_braille_hash(f)
+  end
 
-
+  def test_plaintext_char_to_braille_hash2_with_caps
+    night = NightWriter2.new
+    a = 'A'
+    x = 'X'
+    f = 'F'
+    expected_a = { top:['.','.','0','.'] , mid:['.','.','.' ,'.'], bot:['.','0','.','.'] }
+    expected_x = { top:['.','.','0','0'] , mid:['.','.','.' ,'.'], bot:['.','0','0','0'] }
+    expected_f = { top:['.','.','0','0'] , mid:['.','.','0' ,'.'], bot:['.','0','.','.'] }
+    assert_equal  expected_a , night.plaintext_char_to_braille_hash(a)
+    assert_equal  expected_x , night.plaintext_char_to_braille_hash(x)
+    assert_equal  expected_f , night.plaintext_char_to_braille_hash(f)
+  end
 
 
 
