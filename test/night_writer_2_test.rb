@@ -110,6 +110,14 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected, computed
   end
 
+  def test_plaintext_input_to_braille_string
+    night = NightWriter2.new
+    text = "Hello Aa but a cat"
+    expected = %w{ . . 0 . 0 . 0 . 0 . 0 . . . . . 0 . 0 . . . . . . . 0 . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . . 0 0 . 0 0 . 0 . . 0 . . . . . . . . . . 0 . . . . . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . 0 . . . . 0 . 0 . 0 . . . . 0 . . . . . . . . . . . . . . 0 0 . .}.reduce(:+) + "\n"
+    computed = night.plaintext_input_to_braille_string(text)
+    assert_equal expected, computed
+  end
+
 
 
 

@@ -103,7 +103,6 @@ class NightWriter2
       braille_text[:top] = braille_text[:top][80..-1].to_a
       braille_text[:mid] = braille_text[:mid][80..-1].to_a
       braille_text[:bot] = braille_text[:bot][80..-1].to_a
-      binding.pry
     end
     braille_string
   end
