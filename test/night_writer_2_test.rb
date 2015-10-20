@@ -3,7 +3,7 @@ require 'pry'
 require 'night_writer_2'
 require 'dictionary_tools'
 
-class TestNightWriter < Minitest::Test
+class TestNightWriter2 < Minitest::Test
 
   include DictionaryTools
 
@@ -14,15 +14,20 @@ class TestNightWriter < Minitest::Test
     assert NightWriter2
   end
 
-  def text_plaintext_pre_process
+  def test_plaintext_pre_process
     night = NightWriter2.new
     string = "Hello how are you"
     assert_equal %w{Hello how are you}, night.plaintext_input_pre_process(string)
   end
 
 
-
-
+  def test_special_word_identification
+    night = NightWriter2.new
+    string1 = "cat"
+    string2 = "dog"
+    assert_equal true, night.special?(string1)
+    assert_equal false, night.special?(string2)
+  end
 
 
 

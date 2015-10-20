@@ -1,4 +1,5 @@
 require_relative 'dictionary_tools'
+require 'pry'
 
 class NightWriter2
 
@@ -7,7 +8,7 @@ class NightWriter2
 
   def initialize
     @file = nil
-    @reader = FileReader.new
+    #@reader = FileReader.new
   end
 
   def input
@@ -26,8 +27,10 @@ class NightWriter2
 
   def special?(word)
     default = false
-    DictionaryTool::SPECIALS.keys do |special|
-      if special.to_s == word
+
+    SPECIALS.keys.each do |special|
+      binding.pry
+      if special == word.to_sym
         default = true
       end
     end
