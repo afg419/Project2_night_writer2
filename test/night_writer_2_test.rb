@@ -97,10 +97,18 @@ class TestNightWriter2 < Minitest::Test
                 bot: %w{ . 0 . . . . 0 . 0 . 0 . . . . 0 . . . . . . . . . . . . . . 0 0 . .} }
     computed = night.plaintext_string_to_braille_hash(text)
     assert_equal expected, computed
-
   end
 
-
+  def test_braille_hash_to_braille_string
+    night = NightWriter2.new
+    text = "Hello Aa but a cat"
+    braille_hash = {top: %w{ . . 0 . 0 . 0 . 0 . 0 . . . . . 0 . 0 . . . . . . . 0 . . . 0 0 . .},
+                    mid: %w{ . . 0 0 . 0 0 . 0 . . 0 . . . . . . . . . . 0 . . . . . . . 0 0 . .},
+                    bot: %w{ . 0 . . . . 0 . 0 . 0 . . . . 0 . . . . . . . . . . . . . . 0 0 . .} }
+    expected = %w{ . . 0 . 0 . 0 . 0 . 0 . . . . . 0 . 0 . . . . . . . 0 . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . . 0 0 . 0 0 . 0 . . 0 . . . . . . . . . . 0 . . . . . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . 0 . . . . 0 . 0 . 0 . . . . 0 . . . . . . . . . . . . . . 0 0 . .}.reduce(:+) + "\n"
+    computed = night.braille_hash_to_braille_string(braille_hash)
+    assert_equal expected, computed
+  end
 
 
 

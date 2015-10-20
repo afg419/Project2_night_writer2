@@ -90,7 +90,6 @@ class NightWriter2
       braille_word = concat_braille_hashes(braille_word,space)
       braille_text = concat_braille_hashes(braille_text,braille_word)
     end
-    binding.pry
     braille_text
   end
 
@@ -98,13 +97,13 @@ class NightWriter2
 
   def braille_hash_to_braille_string(braille_text)
     braille_string = ""
-    binding.pry
     until braille_text[:top].length == 0
-      writing = writing + braille_text[:top][0..79].reduce(:+) + "\n" + braille_text[:mid][0..79].reduce(:+) + "\n" + braille_text[:bot][0..79].reduce(:+) + "\n"
+      braille_string = braille_string + braille_text[:top][0..79].reduce(:+) + "\n" + braille_text[:mid][0..79].reduce(:+) + "\n" + braille_text[:bot][0..79].reduce(:+) + "\n"
 
       braille_text[:top] = braille_text[:top][80..-1].to_a
       braille_text[:mid] = braille_text[:mid][80..-1].to_a
       braille_text[:bot] = braille_text[:bot][80..-1].to_a
+      binding.pry
     end
     braille_string
   end
