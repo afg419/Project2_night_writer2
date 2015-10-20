@@ -45,6 +45,13 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected , computed
   end
 
+  def test_capital_letter_identification
+    night = NightWriter2.new
+    a = 'a'
+    b = 'B'
+    assert_equal false, night.capital?(a)
+    assert_equal true, night.capital?(b)
+  end
 
 
 
