@@ -29,6 +29,22 @@ class TestNightWriter2 < Minitest::Test
     assert_equal false, night.special?(string2)
   end
 
+  def test_plaintext_special_to_braille_hash1
+    night = NightWriter2.new
+    special = "cat"
+    expected = { top:['0','0'] , mid:['0' ,'0'], bot:['0','0'] }
+    computed = night.plaintext_special_to_braille_hash(special)
+    assert_equal expected , computed
+  end
+
+  def test_plaintext_special_to_braille_hash2
+    night = NightWriter2.new
+    special = "but"
+    expected = { top:['.','.'] , mid:['0' ,'.'], bot:['.','.'] }
+    computed = night.plaintext_special_to_braille_hash(special)
+    assert_equal expected , computed
+  end
+
 
 
 

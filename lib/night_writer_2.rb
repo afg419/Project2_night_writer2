@@ -29,7 +29,6 @@ class NightWriter2
     default = false
 
     SPECIALS.keys.each do |special|
-      binding.pry
       if special == word.to_sym
         default = true
       end
@@ -41,8 +40,8 @@ class NightWriter2
   #3 if a word is special we return the corresponding special hash
 
   def plaintext_special_to_braille_hash(word)
-    special = word.sym
-    braille_char = braille_num_to_hash(DictionaryTool::SPECIALS(special))
+    special = word.to_sym
+    braille_char = braille_num_to_hash(SPECIALS[special])
     braille_char
   end
 
@@ -78,7 +77,7 @@ class NightWriter2
 
   def plaintext_input_to_braille_hash(string)
     braille_text = {top: [], mid: [], bot:[]}
-    space = braille_num_to_hash(DictionaryTool::DICTIONARY(:" "))
+    space = braille_num_to_hash(DICTIONARY(:" "))
 
     word_array = plaintext_input_pre_process(string)
 
