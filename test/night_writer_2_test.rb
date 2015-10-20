@@ -1,6 +1,7 @@
 require 'minitest'
 require 'pry'
 require 'night_writer_2'
+require 'night_reader_2'
 require 'dictionary_tools'
 
 class TestNightWriter2 < Minitest::Test
@@ -117,10 +118,27 @@ class TestNightWriter2 < Minitest::Test
     computed = night.plaintext_input_to_braille_string(text)
     assert_equal expected, computed
   end
+##########################################
 
+  def test_braille_input_to_braille_hash
+    night = NightReader2.new
+    braille_text = " . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n ".gsub(" ","")
+    expected = {top: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . .  },
+                  mid: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
+                  bot: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . }}
+    computed = night.braille_input_to_braille_hash(braille_text)
+    assert_equal expected, computed
+  end
 
-
-
+  def test_braille_hash_to_braille_char_hashes
+    night = NightReader2.new
+    braille_hash = {top: %w{ . . 0 . 0 . 0 . },
+                    mid: %w{ . . 0 0 . 0 0 . },
+                    bot: %w{ . 0 . . . . 0 . } }
+    expected = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
+    computed = night.braille_hash_to_braille_char_hashes(braille_hash)
+    assert_equal expected, computed
+  end
 
 
 

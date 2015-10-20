@@ -97,7 +97,7 @@ class NightWriter2
 
   def braille_hash_to_braille_string(braille_text)
     braille_string = ""
-    until braille_text[:top].length == 0
+    until braille_text[:top].length == 0 #I would love nothing more than for the following line to be on three lines.  but it doesn't run.
       braille_string = braille_string + braille_text[:top][0..79].reduce(:+) + "\n" + braille_text[:mid][0..79].reduce(:+) + "\n" + braille_text[:bot][0..79].reduce(:+) + "\n"
 
       braille_text[:top] = braille_text[:top][80..-1].to_a
@@ -114,5 +114,14 @@ class NightWriter2
     braille_string = braille_hash_to_braille_string(braille_text)
     braille_string
   end
+
+  ##############################################################################################################
+  ### CONVERTING BRAILLE BACK TO PLAINTEXT #####################################################################
+  ##############################################################################################################
+
+  #1 First we process a braille string into a braille hash
+
+  
+
 
 end

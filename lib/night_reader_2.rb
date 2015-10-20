@@ -1,0 +1,39 @@
+require_relative 'dictionary_tools'
+require 'pry'
+
+
+class NightReader2
+  include DictionaryTools
+
+  def braille_input_to_braille_hash(string)
+    braille_hash = {top: [], mid: [], bot:[]}
+    braille_rows = string.split("\n")
+    #we know that every third entry of above array appears in the same part of the line -- top mid or bot -- and so collect them in the hash.
+    until braille_rows.length < 3 do
+      braille_hash[:top] = braille_hash[:top] + braille_rows.shift.chars
+      braille_hash[:mid] = braille_hash[:mid] + braille_rows.shift.chars
+      braille_hash[:bot] = braille_hash[:bot] + braille_rows.shift.chars
+    end
+
+    braille_hash
+    #outputs a top mid bot hash with array values whose entries are the characters of the string.
+  end
+
+  #2 Now we process the hash into an array of hashes, each representing only one character
+
+  def braille_hash_to_braille_char_hashes(braille_hash)
+    braille_char_array = []
+
+    until braille_hash[:top].length < 2 do
+      entry = {top: [] , mid:[] , bot:[]}
+      entry[:top] = braille_hash[:top].shift(2)
+      entry[:mid] = braille_hash[:mid].shift(2)
+      entry[:bot] = braille_hash[:bot].shift(2)
+      braille_char_array << entry
+    end
+
+    braille_char_array
+  end
+
+
+end
