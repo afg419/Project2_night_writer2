@@ -79,10 +79,15 @@ class TestNightWriter2 < Minitest::Test
     assert_equal  expected_f , night.plaintext_char_to_braille_hash(f)
   end
 
-
-
-
-
+  def test_plaintext_word_to_braille_hash
+    night = NightWriter2.new
+    word = "Hello"
+    expected = {top: %w{ . . 0 . 0 . 0 . 0 . 0 .  },
+                mid: %w{ . . 0 0 . 0 0 . 0 . . 0  },
+                bot: %w{ . 0 . . . . 0 . 0 . 0 .  }}
+    received = night.plaintext_word_to_braille_hash(word)
+    assert_equal expected , received
+  end
 
 
 

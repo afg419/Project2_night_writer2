@@ -64,7 +64,7 @@ class NightWriter2
   def plaintext_word_to_braille_hash(word)
     braille_word = {top: [], mid: [], bot:[]}
 
-    word.char.each do |char|
+    word.chars.each do |char|
       braille_char = plaintext_char_to_braille_hash(char)
       braille_word = concat_braille_hashes(braille_word,braille_char)
     end
