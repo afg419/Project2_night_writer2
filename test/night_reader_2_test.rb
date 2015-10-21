@@ -60,6 +60,15 @@ class TestNightReader2 < Minitest::Test
     assert_equal false, night.number?(no)
   end
 
+  def test_braille_digit_to_plaintext_digit
+    night = NightReader2.new
+    zero = {top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . .  } }
+    six = {top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ . .  } }
+    assert_equal "0", night.braille_digit_to_plaintext_digit(zero)
+    assert_equal "6", night.braille_digit_to_plaintext_digit(six)
+
+  end
+
   def test_braille_special_to_plaintext
     night = NightReader2.new
     cat = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]

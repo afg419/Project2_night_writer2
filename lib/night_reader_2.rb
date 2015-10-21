@@ -74,7 +74,7 @@ class NightReader2
     SPECIALS.invert[key].to_s
   end
 
-  #6 If a word is not special, we process it a character at a time, converting 'shift' characters into capital letters
+  #6 If a word is not special, (numbers too) we process it a character at a time, converting 'shift' characters into capital letters
 
   def braille_hash_to_plaintext_char(braille_hash)
     #### This method will return a shift and input letter in braille if it is capital
@@ -82,9 +82,14 @@ class NightReader2
     DICTIONARY.invert[braille_array].to_s
   end
 
+  def braille_digit_to_plaintext_digit(braille_digit)
+    braille_array = braille_hash_to_num(braille_digit)
+    NUMBERS.invert[braille_array].to_s
+  end
+
   def braille_word_to_plaintext_word(braille_word)
     word = ""
-    capitalize = false
+    capitalize = false #uses a capitalize bool to flag when the letter should be made capital
 
     braille_word.each do |braille_char|
 
@@ -102,6 +107,16 @@ class NightReader2
     word
   end
 
+  # def braille_number_to_plaintext_number(braille_word)
+  #   word = ""
+  #   braille_word.shift #deletes the '#' symbol
+  #
+  #   braille_word.each do |braille_num|
+  #     char =
+  #
+  #
+  #   end
+  # end
 
   #7 finally we are ready to F shit up
 
