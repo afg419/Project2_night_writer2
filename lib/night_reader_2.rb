@@ -66,9 +66,31 @@ class NightReader2
         break
       end
     end
-
     SPECIALS.invert[key].to_s
-
   end
+
+  #6 If a word is not special, we process it a character at a time, converting 'shift' characters into '%' signs
+
+  def braille_hash_to_plaintext_char(braille_hash)
+    #### This method will return a shift and input letter in braille if it is capital
+    braille_array = braille_hash_to_num(braille_hash)
+    binding.pry
+    DICTIONARY.invert[braille_array].to_s
+  end
+
+  def plaintext_word_to_braille_hash(word)
+    braille_word = {top: [], mid: [], bot:[]}
+
+    word.chars.each do |char|
+      braille_char = plaintext_char_to_braille_hash(char)
+      braille_word = concat_braille_hashes(braille_word,braille_char)
+    end
+
+    braille_word
+  end
+
+
+
+
 
 end

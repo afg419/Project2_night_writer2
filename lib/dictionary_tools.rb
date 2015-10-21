@@ -1,4 +1,5 @@
 
+require 'pry'
 module DictionaryTools
 
 
@@ -41,17 +42,29 @@ DICTIONARY = {
   }
 
   def indices_to_braille(num_array,num)
-    if num_array.include?(num)
-      '0'
-    else
-      '.'
-    end
+    num_array.include?(num) ? '0' : '.'
   end
 
   def braille_num_to_hash(num_array)
     {top: [indices_to_braille(num_array,'1'), indices_to_braille(num_array,'4') ],
      mid: [indices_to_braille(num_array,'2'), indices_to_braille(num_array,'5') ],
      bot: [indices_to_braille(num_array,'3'), indices_to_braille(num_array,'6') ]}
+  end
+
+  def braille_hash_to_num(braille_hash)
+    x = []
+    output = []
+    braille_hash.values.each do |val|
+      x = x + val
+    end
+
+    x = x.map do |entry|
+      ((entry == "0") ? 1 : 0)
+      #binding.pry
+    end
+
+    output = ["1"*x[0], "2"*x[2], "3"*x[4], "4"*x[1], "5"*x[3], "6"*x[5]].reject{|x| x == ""}
+
   end
 
   ##########################WorkingwithBraille###########################
@@ -66,3 +79,8 @@ DICTIONARY = {
 
 
 end
+
+
+include DictionaryTools
+
+puts braille_hash_to_num({ top:['0','.'] , mid:['.' ,'.'], bot:['.','.'] }).inspect

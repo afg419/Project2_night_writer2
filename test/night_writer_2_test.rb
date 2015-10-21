@@ -164,7 +164,13 @@ class TestNightWriter2 < Minitest::Test
     assert_equal "but", night.braille_special_to_plaintext(but)
   end
 
-
+  def test_braille_hash_to_plaintext_char
+    night = NightReader2.new
+    a = {top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . . } }
+    expected = "a"
+    computed = night.braille_hash_to_plaintext_char(a)
+    assert_equal expected, computed
+  end
 
 
 

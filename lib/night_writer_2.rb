@@ -76,6 +76,14 @@ class NightWriter2
   # we have to now combine them along with the space characters we removed in pre_processing
 
   def plaintext_string_to_braille_hash(string)
+    # what is the input
+    # what is the end result
+      # list out steps
+      # each step becomes a unit test
+      # the implementation is the integration test
+
+
+
     braille_text = {top: [], mid: [], bot:[]}
     space = braille_num_to_hash(DICTIONARY[:" "])
 
@@ -115,6 +123,6 @@ class NightWriter2
     braille_string
   end
 
-  
+
 
 end
