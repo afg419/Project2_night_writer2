@@ -1,4 +1,5 @@
 require_relative 'dictionary_tools'
+require_relative 'night_reader_2'
 require 'pry'
 
 class NightWriter2
@@ -37,7 +38,7 @@ class NightWriter2
     default
   end
 
-  #3 if a word is special we return the corresponding special hash
+  #3 if a word is special we return the corresponding special hash.
 
   def plaintext_special_to_braille_hash(word)
     special = word.to_sym
@@ -51,11 +52,15 @@ class NightWriter2
     char.upcase == char
   end
 
+  def number?(word)
+    word.chr.to_i.to_s == word.chr
+  end
+
   def plaintext_char_to_braille_hash(char)
     #### This method will return a shift and input letter in braille if it is capital
     letter = braille_num_to_hash(DICTIONARY[char.downcase.to_sym])
     if capital?(char)
-      shift = braille_num_to_hash(DICTIONARY[:capital])
+      shift = braille_num_to_hash(DICTIONARY[:_])
       letter = concat_braille_hashes(shift,letter)
     end
     letter
@@ -69,6 +74,15 @@ class NightWriter2
       braille_word = concat_braille_hashes(braille_word,braille_char)
     end
 
+    braille_word
+  end
+###########TESTING FOR NUMBERS NEEDED
+  def number_word_to_braille_hash(word)
+    braille_word = braille_num_to_hash(NUMBERS['#'])
+    word.chars.each do |char|
+      braille_char = braille_num_to_hash(NUMBERS[char])
+      braille_word = concat_braille_hashes(braille_word,braille_char)
+    end
     braille_word
   end
 
@@ -117,7 +131,7 @@ class NightWriter2
 
   #7 Do it all in one method concat_braille_hashes
 
-  def plaintext_input_to_braille_string(string)
+  def plaintext_string_to_braille_string(string)
     braille_text = plaintext_string_to_braille_hash(string)
     braille_string = braille_hash_to_braille_string(braille_text)
     braille_string

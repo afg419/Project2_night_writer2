@@ -1,4 +1,5 @@
 require_relative 'dictionary_tools'
+require_relative 'night_writer_2'
 require 'pry'
 
 
@@ -69,28 +70,68 @@ class NightReader2
     SPECIALS.invert[key].to_s
   end
 
-  #6 If a word is not special, we process it a character at a time, converting 'shift' characters into '%' signs
+  #6 If a word is not special, we process it a character at a time, converting 'shift' characters into capital letters
 
   def braille_hash_to_plaintext_char(braille_hash)
     #### This method will return a shift and input letter in braille if it is capital
     braille_array = braille_hash_to_num(braille_hash)
-    binding.pry
     DICTIONARY.invert[braille_array].to_s
   end
 
-  def plaintext_word_to_braille_hash(word)
-    braille_word = {top: [], mid: [], bot:[]}
+  def braille_word_to_plaintext_word(braille_word)
+    word = ""
+    capitalize = false
 
-    word.chars.each do |char|
-      braille_char = plaintext_char_to_braille_hash(char)
-      braille_word = concat_braille_hashes(braille_word,braille_char)
+    braille_word.each do |braille_char|
+
+      if braille_char == braille_num_to_hash(DICTIONARY[:_])
+        capitalize = true
+      elsif capitalize == true
+        char = braille_hash_to_plaintext_char(braille_char).capitalize
+        capitalize = false
+        word = word + char
+      else
+        char = braille_hash_to_plaintext_char(braille_char)
+        word = word + char
+      end
     end
-
-    braille_word
+    word
   end
 
 
+  #7 finally we are ready to F shit up
 
+  def braille_string_to_plaintext_string(braille_string)
 
+    plaintext = ""
+    braille_hash = braille_input_to_braille_hash(braille_string)
+    braille_char_array = braille_hash_to_braille_char_hashes(braille_hash)
+    braille_words = wrap_braille_chars_into_words(braille_char_array)
+
+    braille_words.each do |braille_word|
+      if special?(braille_word)
+        word = braille_special_to_plaintext(braille_word)
+      else
+        word = braille_word_to_plaintext_word(braille_word)
+      end
+      plaintext = plaintext + word
+    end
+    plaintext
+  end
+
+  #8 double finally we are ready for printing
+
+  def plaintext_to_printable(plaintext)
+    printable = ""
+    until plaintext == "" do
+      printable = printable + plaintext[0..79]
+      plaintext = plaintext[80..-1]
+    end
+  end
+
+  def decode_braille_to_text(braille_string)
+    text = braille_string_to_plaintext_string(braille_string)
+    plaintext_to_printable(text)
+  end
 
 end

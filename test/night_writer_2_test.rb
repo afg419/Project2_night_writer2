@@ -111,11 +111,11 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected, computed
   end
 
-  def test_plaintext_input_to_braille_string
+  def test_plaintext_string_to_braille_string
     night = NightWriter2.new
     text = "Hello Aa but a cat"
     expected = %w{ . . 0 . 0 . 0 . 0 . 0 . . . . . 0 . 0 . . . . . . . 0 . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . . 0 0 . 0 0 . 0 . . 0 . . . . . . . . . . 0 . . . . . . . 0 0 . .}.reduce(:+) + "\n" + %w{ . 0 . . . . 0 . 0 . 0 . . . . 0 . . . . . . . . . . . . . . 0 0 . .}.reduce(:+) + "\n"
-    computed = night.plaintext_input_to_braille_string(text)
+    computed = night.plaintext_string_to_braille_string(text)
     assert_equal expected, computed
   end
 ##########################################
@@ -172,7 +172,22 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected, computed
   end
 
+  def test_braille_word_to_plaintext_word
+    night = NightReader2.new
+    word = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } ,  {top: %w{0 .}, mid: %w{. 0}, bot: %w{0 .} }   ]
+    expected = "Hello"
+    computed = night.braille_word_to_plaintext_word(word)
+    assert_equal expected, computed
+  end
 
+  def test_braille_string_to_plaintext_string
+    night = NightReader2.new
+    day = NightWriter2.new
+    expected = "Hello Jon but when is now "
+    compute1 = day.plaintext_string_to_braille_string(expected)
+    computed = night.braille_string_to_plaintext_string(compute1)
+    assert_equal expected, computed
+  end
 
 
 
@@ -309,5 +324,12 @@ class TestNightWriter2 < Minitest::Test
   #   received = night.build_braille_text(plaintext)
   #   assert_equal expected , received
   # end
-
 end
+
+
+include DictionaryTools
+
+day = NightWriter2.new
+braille = day.plaintext_string_to_braille_string("Hello but when is now")
+night = NightReader2.new
+puts "plaintext= " + night.braille_string_to_plaintext_string(braille).inspect
