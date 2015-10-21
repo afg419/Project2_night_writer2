@@ -132,14 +132,13 @@ class NightWriter2
     braille_string
   end
 
-  #7 Do it all in one method concat_braille_hashes
+  #7 Do it all in one method 
 
   def plaintext_string_to_braille_string(string)
     braille_text = plaintext_string_to_braille_hash(string)
     braille_string = braille_hash_to_braille_string(braille_text)
     braille_string
   end
-
 
 
 end

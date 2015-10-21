@@ -50,7 +50,7 @@ class NightReader2
   def special?(braille_word)
     default = false
     SPECIALS.invert.keys.each do |special|
-      if braille_num_to_hash(special) == braille_word[0]
+      if braille_num_to_hash(special) == braille_word[0] && braille_word.length == 1
         default = true
       end
     end
