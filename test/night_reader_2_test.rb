@@ -93,6 +93,14 @@ class TestNightReader2 < Minitest::Test
     assert_equal expected, computed
   end
 
+  def test_braille_num_to_plaintext_num
+    night = NightReader2.new
+    num = [{top: %w{ 0 . }, mid: %w{ 0 .}, bot: %w{ . 0 } },{top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . .  } },{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ . .  } },{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ . .  } }]
+    expected = "066"
+    computed = night.braille_number_to_plaintext_number(num)
+    assert_equal expected, computed
+  end
+
   def test_braille_string_to_plaintext_string
     night = NightReader2.new
     day = NightWriter2.new

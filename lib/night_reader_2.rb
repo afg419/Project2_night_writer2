@@ -107,16 +107,16 @@ class NightReader2
     word
   end
 
-  # def braille_number_to_plaintext_number(braille_word)
-  #   word = ""
-  #   braille_word.shift #deletes the '#' symbol
-  #
-  #   braille_word.each do |braille_num|
-  #     char =
-  #
-  #
-  #   end
-  # end
+  def braille_number_to_plaintext_number(braille_word)
+    word = ""
+    braille_word.shift #deletes the '#' symbol
+
+    braille_word.each do |braille_num|
+      char = braille_digit_to_plaintext_digit(braille_num)
+      word = word + char
+    end
+    word
+  end
 
   #7 finally we are ready to F shit up
 
