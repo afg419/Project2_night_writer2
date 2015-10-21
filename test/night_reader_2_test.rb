@@ -101,10 +101,19 @@ class TestNightReader2 < Minitest::Test
     assert_equal expected, computed
   end
 
-  def test_braille_string_to_plaintext_string
+  def test_braille_string_to_plaintext_string_with_caps_and_specials
     night = NightReader2.new
     day = NightWriter2.new
     expected = "Hello Jon but when is now "
+    compute1 = day.plaintext_string_to_braille_string(expected)
+    computed = night.braille_string_to_plaintext_string(compute1)
+    assert_equal expected, computed
+  end
+
+  def test_braille_string_to_plaintext_string_with_caps_and_specials_and_numbers
+    night = NightReader2.new
+    day = NightWriter2.new
+    expected = "Hello Jon but 12 when 134 is now "
     compute1 = day.plaintext_string_to_braille_string(expected)
     computed = night.braille_string_to_plaintext_string(compute1)
     assert_equal expected, computed

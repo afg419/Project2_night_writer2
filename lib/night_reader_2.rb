@@ -130,6 +130,8 @@ class NightReader2
     braille_words.each do |braille_word|
       if special?(braille_word)
         word = braille_special_to_plaintext(braille_word)
+      elsif number?(braille_word)
+        word = braille_number_to_plaintext_number(braille_word)
       else
         word = braille_word_to_plaintext_word(braille_word)
       end
