@@ -45,7 +45,7 @@ class NightReader2
     wrapped
   end
 
-  #4 Now that we are all processed, we can begin to translate to plaintext.  First we identify special characters/words
+  #4 Now that we are all processed, we can begin to translate to plaintext.  First we identify special characters/words and numbers
 
   def special?(braille_word)
     default = false
@@ -55,6 +55,10 @@ class NightReader2
       end
     end
     default
+  end
+
+  def number?(braille_word)
+    braille_word[0] == braille_num_to_hash(NUMBERS['#'])
   end
 
   #5 If a braille word is special, we return the corresponding plaintext word

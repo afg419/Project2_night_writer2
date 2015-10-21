@@ -52,6 +52,14 @@ class TestNightReader2 < Minitest::Test
     assert_equal false, night.special?(no)
   end
 
+  def test_braille_number_identification
+    night = NightReader2.new
+    yes =[{top: %w{ 0 . }, mid: %w{ 0 .}, bot: %w{ . 0 } },{top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . .  } } ]
+    no = [{top: %w{ 0 . }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
+    assert_equal true, night.number?(yes)
+    assert_equal false, night.number?(no)
+  end
+
   def test_braille_special_to_plaintext
     night = NightReader2.new
     cat = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
