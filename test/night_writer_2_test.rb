@@ -148,6 +148,14 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected, computed
   end
 
+  def test_special_braille_word_identification
+    night = NightReader2.new
+    yes = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
+    no = [{top: %w{ 0 . }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
+    assert_equal true, night.special?(yes)
+    assert_equal false, night.special?(no)
+  end
+
 
 
 

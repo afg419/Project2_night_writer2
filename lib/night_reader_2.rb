@@ -35,7 +35,7 @@ class NightReader2
     braille_char_array
   end
 
-  #3 Now we take that array of hashes, and put characters in the same word together into arrays
+  #3 Now we take that array of hashes, and put characters in the same word together into arrays.
 
   def wrap_braille_chars_into_words(braille_char_array)
     space = {top: %w{. .}, mid: %w{. .}, bot: %w{. .}}
@@ -43,6 +43,19 @@ class NightReader2
     # All space entries of the original array are returned as singleton arrays, and all other characters returned in arrays.
     wrapped
   end
+
+  #4 Now that we are all processed, we can begin to translate to plaintext.  First we identify special characters/words
+
+  def special?(braille_word)
+    default = false
+    SPECIALS.invert.keys.each do |special|
+      if braille_num_to_hash(special) == braille_word[0]
+        default = true
+      end
+    end
+    default
+  end
+
 
 
 end
