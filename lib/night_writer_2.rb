@@ -1,4 +1,5 @@
 require_relative 'dictionary_tools'
+require_relative 'file_reader_writer'
 require_relative 'night_reader_2'
 require 'pry'
 
@@ -141,3 +142,6 @@ class NightWriter2
 
 
 end
+
+# filereader = FileReader.new(ARGV[0],ARGV[1])
+# filereader.convert_text_to_braille

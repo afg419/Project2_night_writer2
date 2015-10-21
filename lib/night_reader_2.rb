@@ -1,5 +1,8 @@
 require_relative 'dictionary_tools'
+require_relative 'file_reader_writer'
 require_relative 'night_writer_2'
+require_relative 'file_reader_writer'
+
 require 'pry'
 
 
@@ -146,8 +149,9 @@ class NightReader2
     printable = ""
     until plaintext == "" do
       printable = printable + plaintext[0..79]
-      plaintext = plaintext[80..-1]
+      plaintext = plaintext[80..-1].to_s
     end
+    printable
   end
 
   def decode_braille_to_text(braille_string)
@@ -156,3 +160,7 @@ class NightReader2
   end
 
 end
+# binding.pry
+#
+# filereader2 = FileReader.new(ARGV[1],ARGV[0])
+# filereader2.convert_braille_to_text
