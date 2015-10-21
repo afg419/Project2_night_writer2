@@ -131,9 +131,3 @@ class TestNightReader2 < Minitest::Test
 
 
 end
-
-night = NightReader2.new
-day = NightWriter2.new
-expected = "now "
-compute1 = day.plaintext_string_to_braille_string(expected)
-computed = night.braille_string_to_plaintext_string(compute1)

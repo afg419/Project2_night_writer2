@@ -8,8 +8,7 @@ class NightWriter2
   attr_reader :file_reader,:file
 
   def initialize
-    @file = nil
-    #@reader = FileReader.new
+
   end
 
   def input
@@ -132,7 +131,7 @@ class NightWriter2
     braille_string
   end
 
-  #7 Do it all in one method 
+  #7 Do it all in one method
 
   def plaintext_string_to_braille_string(string)
     braille_text = plaintext_string_to_braille_hash(string)
