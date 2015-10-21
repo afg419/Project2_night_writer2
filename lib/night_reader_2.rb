@@ -35,5 +35,14 @@ class NightReader2
     braille_char_array
   end
 
+  #3 Now we take that array of hashes, and put characters in the same word together into arrays
+
+  def wrap_braille_chars_into_words(braille_char_array)
+    space = {top: %w{. .}, mid: %w{. .}, bot: %w{. .}}
+    wrapped = braille_char_array.slice_when{|x,y| x == space || y == space}.to_a
+    # All space entries of the original array are returned as singleton arrays, and all other characters returned in arrays.
+    wrapped
+  end
+
 
 end

@@ -123,7 +123,7 @@ class TestNightWriter2 < Minitest::Test
   def test_braille_input_to_braille_hash
     night = NightReader2.new
     braille_text = " . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n ".gsub(" ","")
-    expected = {top: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . .  },
+    expected = {  top: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
                   mid: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
                   bot: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . }}
     computed = night.braille_input_to_braille_hash(braille_text)
@@ -140,8 +140,13 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected, computed
   end
 
-
-
+  def test_wrap_braille_chars_into_words
+    night = NightReader2.new
+    array = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{. .}, mid: %w{. .}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
+    expected = [ [{top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} } ], [{top: %w{. .}, mid: %w{. .}, bot: %w{. .} } ], [{top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } ]  ]
+    computed = night.wrap_braille_chars_into_words(array)
+    assert_equal expected, computed
+  end
 
 
 

@@ -121,7 +121,7 @@ class NightWriter2
 
   #1 First we process a braille string into a braille hash
 
-  
+
 
 
 end
