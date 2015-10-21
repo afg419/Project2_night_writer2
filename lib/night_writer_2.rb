@@ -76,8 +76,10 @@ class NightWriter2
 
     braille_word
   end
+
 ###########TESTING FOR NUMBERS NEEDED
-  def number_word_to_braille_hash(word)
+
+  def plaintext_number_to_braille_hash(word)
     braille_word = braille_num_to_hash(NUMBERS['#'])
     word.chars.each do |char|
       braille_char = braille_num_to_hash(NUMBERS[char])
@@ -97,7 +99,6 @@ class NightWriter2
       # the implementation is the integration test
 
 
-
     braille_text = {top: [], mid: [], bot:[]}
     space = braille_num_to_hash(DICTIONARY[:" "])
 
@@ -105,6 +106,8 @@ class NightWriter2
     word_array.each do |word|
       if special?(word)
         braille_word = plaintext_special_to_braille_hash(word)
+      elsif number?(word)
+        braille_word = plaintext_number_to_braille_hash(word)
       else
         braille_word = plaintext_word_to_braille_hash(word)
       end

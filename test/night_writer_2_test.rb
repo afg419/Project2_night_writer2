@@ -90,6 +90,29 @@ class TestNightWriter2 < Minitest::Test
     assert_equal expected , computed
   end
 
+  def test_number_true
+    night = NightWriter2.new
+    word = "12"
+    assert_equal true, night.number?(word)
+  end
+
+
+  def test_number_false
+    night = NightWriter2.new
+    word = "aa"
+    assert_equal false, night.number?(word)
+  end
+
+  def test_plaintext_number_to_braille_hash
+    night = NightWriter2.new
+    word = "3225"
+    expected = {top: %w{ 0 . 0 0 0 0 0 0 0 0},
+                mid: %w{ 0 . . 0 . . . . 0 .},
+                bot: %w{ . 0 . . . . . . . .}}
+    computed = night.plaintext_number_to_braille_hash(word)
+    assert_equal expected, computed
+  end
+
   def test_plaintext_string_to_braille_hash
     night = NightWriter2.new
     text = "Hello Aa but a cat"
@@ -118,218 +141,31 @@ class TestNightWriter2 < Minitest::Test
     computed = night.plaintext_string_to_braille_string(text)
     assert_equal expected, computed
   end
-##########################################
 
-  def test_braille_input_to_braille_hash
-    night = NightReader2.new
-    braille_text = " . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n ".gsub(" ","")
-    expected = {  top: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
-                  mid: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
-                  bot: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . }}
-    computed = night.braille_input_to_braille_hash(braille_text)
+  def test_plaintext_numbers_to_braille_string
+    night = NightWriter2.new
+    text = "10"
+    expected = "0.0.0...\n0.0.....\n.0......\n"
+    computed = night.plaintext_string_to_braille_string(text)
     assert_equal expected, computed
   end
 
-  def test_braille_hash_to_braille_char_hashes
-    night = NightReader2.new
-    braille_hash = {top: %w{ . . 0 . 0 . 0 . },
-                    mid: %w{ . . 0 0 . 0 0 . },
-                    bot: %w{ . 0 . . . . 0 . } }
-    expected = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
-    computed = night.braille_hash_to_braille_char_hashes(braille_hash)
+  def test_plaintext_string_with_numbers_to_braille_string
+    night = NightWriter2.new
+    text = "Hello Aa but a cat 12"
+    expected = "..0.0.0.0.0.....0.0.......0...00..0.0.00..\n..00.00.0..0..........0.......00..0.0.....\n.0....0.0.0....0..............00...0......\n"
+    computed = night.plaintext_string_to_braille_string(text)
     assert_equal expected, computed
   end
-
-  def test_wrap_braille_chars_into_words
-    night = NightReader2.new
-    array = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{. .}, mid: %w{. .}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
-    expected = [ [{top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} } ], [{top: %w{. .}, mid: %w{. .}, bot: %w{. .} } ], [{top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } ]  ]
-    computed = night.wrap_braille_chars_into_words(array)
-    assert_equal expected, computed
-  end
-
-  def test_special_braille_word_identification
-    night = NightReader2.new
-    yes = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
-    no = [{top: %w{ 0 . }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
-    assert_equal true, night.special?(yes)
-    assert_equal false, night.special?(no)
-  end
-
-  def test_braille_special_to_plaintext
-    night = NightReader2.new
-    cat = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
-    but = [{top: %w{ . . }, mid: %w{ 0 . }, bot: %w{ . . } }]
-    assert_equal "cat", night.braille_special_to_plaintext(cat)
-    assert_equal "but", night.braille_special_to_plaintext(but)
-  end
-
-  def test_braille_hash_to_plaintext_char
-    night = NightReader2.new
-    a = {top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . . } }
-    expected = "a"
-    computed = night.braille_hash_to_plaintext_char(a)
-    assert_equal expected, computed
-  end
-
-  def test_braille_word_to_plaintext_word
-    night = NightReader2.new
-    word = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } ,  {top: %w{0 .}, mid: %w{. 0}, bot: %w{0 .} }   ]
-    expected = "Hello"
-    computed = night.braille_word_to_plaintext_word(word)
-    assert_equal expected, computed
-  end
-
-  def test_braille_string_to_plaintext_string
-    night = NightReader2.new
-    day = NightWriter2.new
-    expected = "Hello Jon but when is now "
-    compute1 = day.plaintext_string_to_braille_string(expected)
-    computed = night.braille_string_to_plaintext_string(compute1)
-    assert_equal expected, computed
-  end
+#########################################
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  # def test_input_to_char_array
-  #   skip
-  #   night = NightWriter.new
-  #   text
-  #   night.input()
-  # end
-  #
-  # def test_translate_one_lower_case_plaintext_to_braille
-  #   skip
-  #   night = NightWriter.new
-  #   alphabet = %w{ a b c d e f g h i j k l m n o p q r s t u v w x y z }
-  #   assert_equal {top:['0','.'] , mid:['.','.'] , bot:['.','.']}, night.plaintext_to_braille(alphabet[0])
-  # end
-  #
-  # def test_braille_num_to_braille_hash_1
-  #   night = NightWriter.new
-  #   expected = { top:['0','.'] , mid:['.' ,'0'], bot:['0','.'] }
-  #   received = night.braille_num_to_hash( ['1','3','5'] )
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_braille_num_to_braille_hash_2
-  #   night = NightWriter.new
-  #   expected = { top:['.','.'] , mid:['0' ,'.'], bot:['.','.'] }
-  #   received = night.braille_num_to_hash( ['2'] )
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_plaintext_char_to_braille_hash_1
-  #   night = NightWriter.new
-  #   plaintext = 'a'
-  #   expected = { top:['0','.'] , mid:['.' ,'.'], bot:['.','.'] }
-  #   received = night.plaintext_char_to_braille_hash(plaintext)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_plaintext_char_to_braille_hash_2
-  #   night = NightWriter.new
-  #   plaintext = 'x'
-  #   expected = { top:['0','0'] , mid:['.' ,'.'], bot:['0','0'] }
-  #   received = night.plaintext_char_to_braille_hash(plaintext)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_plaintext_char_to_braille_hash_space
-  #   night = NightWriter.new
-  #   plaintext = ' '
-  #   expected = { top:['.','.'] , mid:['.' ,'.'], bot:['.','.'] }
-  #   received = night.plaintext_char_to_braille_hash(plaintext)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_plaintext_char_to_braille_with_capital
-  #   night = NightWriter.new
-  #   plaintext = 'A'
-  #   expected = { top: %w{ . . 0 . } , mid: %w{ . . . . }, bot: %w{ . 0 . .} }
-  #   received = night.plaintext_char_to_braille_hash(plaintext)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_concat_braille_hashes_1
-  #   night = NightWriter.new
-  #   a = night.plaintext_char_to_braille_hash('a')
-  #   b = night.plaintext_char_to_braille_hash('b')
-  #   expected = {top: ['0','.','0','.'], mid: ['.','.','0','.'], bot: ['.','.','.','.']}
-  #   received = night.concat_braille_hashes(a,b)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_concat_braille_hashes_2
-  #   night = NightWriter.new
-  #   a = night.plaintext_char_to_braille_hash('x')
-  #   b = night.plaintext_char_to_braille_hash('y')
-  #   expected = {top: ['0','0','0','0'], mid: ['.','.','.','0'], bot: ['0','0','0','0']}
-  #   received = night.concat_braille_hashes(a,b)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_concat_braille_hashes_with_space
-  #   night = NightWriter.new
-  #   a = night.plaintext_char_to_braille_hash('x')
-  #   b = night.plaintext_char_to_braille_hash(' ')
-  #   expected = {top: ['0','0','.','.'], mid: ['.','.','.','.'], bot: ['0','0','.','.']}
-  #   received = night.concat_braille_hashes(a,b)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_concat_braille_hashes_with_two_spaces
-  #   night = NightWriter.new
-  #   a = night.plaintext_char_to_braille_hash(' ')
-  #   b = night.plaintext_char_to_braille_hash(' ')
-  #   expected = {top: ['.','.','.','.'], mid: ['.','.','.','.'], bot: ['.','.','.','.']}
-  #   received = night.concat_braille_hashes(a,b)
-  #   assert_equal expected, received
-  # end
-  #
-  # def test_capitalize_true
-  #   night = NightWriter.new
-  #   a = 'A'
-  #   assert_equal true, night.capital?(a)
-  # end
-  #
-  # def test_capitalize_false
-  #   night = NightWriter.new
-  #   b = 'b'
-  #   assert_equal false, night.capital?(b)
-  # end
-  #
-  # def test_braille_line_builder
-  #   night = NightWriter.new
-  #   plaintext = "Hello "
-  #   expected = {top: %w{ . . 0 . 0 . 0 . 0 . 0 . . . },
-  #               mid: %w{ . . 0 0 . 0 0 . 0 . . 0 . . },
-  #               bot: %w{ . 0 . . . . 0 . 0 . 0 . . . }}
-  #   received = night.build_braille_text(plaintext)
-  #   assert_equal expected , received
-  # end
 end
 
 
-include DictionaryTools
 
-day = NightWriter2.new
-braille = day.plaintext_string_to_braille_string("Hello but when is now")
-night = NightReader2.new
-puts "plaintext= " + night.braille_string_to_plaintext_string(braille).inspect
+
+# day = NightWriter2.new
+# braille = day.plaintext_string_to_braille_string("Hello but when is now")
+# night = NightReader2.new
+# puts "plaintext= " + night.braille_string_to_plaintext_string(braille).inspect
