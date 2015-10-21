@@ -56,6 +56,19 @@ class NightReader2
     default
   end
 
+  #5 If a braille word is special, we return the corresponding plaintext word
 
+  def braille_special_to_plaintext(braille_word)
+    key = 0
+    SPECIALS.invert.keys.each do |special|
+      if braille_num_to_hash(special) == braille_word[0]
+        key = special
+        break
+      end
+    end
+
+    SPECIALS.invert[key].to_s
+
+  end
 
 end

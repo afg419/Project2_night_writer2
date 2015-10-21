@@ -156,6 +156,14 @@ class TestNightWriter2 < Minitest::Test
     assert_equal false, night.special?(no)
   end
 
+  def test_braille_special_to_plaintext
+    night = NightReader2.new
+    cat = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
+    but = [{top: %w{ . . }, mid: %w{ 0 . }, bot: %w{ . . } }]
+    assert_equal "cat", night.braille_special_to_plaintext(cat)
+    assert_equal "but", night.braille_special_to_plaintext(but)
+  end
+
 
 
 
