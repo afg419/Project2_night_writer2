@@ -105,6 +105,8 @@ DICTIONARY = {
      bot: [indices_to_braille(num_array,'3'), indices_to_braille(num_array,'6') ]}
   end
 
+  #The following method is a working disaster.
+
   def braille_hash_to_num(braille_hash)
     x = []
     output = []
@@ -133,8 +135,3 @@ DICTIONARY = {
 
 
 end
-
-
-include DictionaryTools
-
-puts braille_hash_to_num({ top:['0','.'] , mid:['.' ,'.'], bot:['.','.'] }).inspect

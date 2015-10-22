@@ -16,31 +16,31 @@ class TestNightReader2 < Minitest::Test
   end
 
 
-  def test_braille_input_to_braille_hash
+  def test_braille_printable_to_braille_text
     night = NightReader2.new
     braille_text = " . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n . . 0 0 . . 0 . 0 . . . \n ".gsub(" ","")
     expected = {  top: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
                   mid: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . },
                   bot: %w{. . 0 0 . . 0 . 0 . . . . . 0 0 . . 0 . 0 . . . }}
-    computed = night.braille_input_to_braille_hash(braille_text)
+    computed = night.braille_printable_to_braille_text(braille_text)
     assert_equal expected, computed
   end
 
-  def test_braille_hash_to_braille_char_hashes
+  def test_braille_text_to_braille_chars
     night = NightReader2.new
     braille_hash = {top: %w{ . . 0 . 0 . 0 . },
                     mid: %w{ . . 0 0 . 0 0 . },
                     bot: %w{ . 0 . . . . 0 . } }
     expected = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
-    computed = night.braille_hash_to_braille_char_hashes(braille_hash)
+    computed = night.braille_text_to_braille_chars(braille_hash)
     assert_equal expected, computed
   end
 
-  def test_wrap_braille_chars_into_words
+  def test_braille_chars_to_braille_words
     night = NightReader2.new
     array = [ {top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} }, {top: %w{. .}, mid: %w{. .}, bot: %w{. .} }, {top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} }   ]
     expected = [ [{top: %w{. .}, mid: %w{. .}, bot: %w{. 0} } , {top: %w{0 .}, mid: %w{0 0}, bot: %w{. .} } ], [{top: %w{. .}, mid: %w{. .}, bot: %w{. .} } ], [{top: %w{0 .}, mid: %w{. 0}, bot: %w{. .} } , {top: %w{0 .}, mid: %w{0 .}, bot: %w{0 .} } ]  ]
-    computed = night.wrap_braille_chars_into_words(array)
+    computed = night.braille_chars_to_braille_words(array)
     assert_equal expected, computed
   end
 
@@ -69,19 +69,19 @@ class TestNightReader2 < Minitest::Test
 
   end
 
-  def test_braille_special_to_plaintext
+  def test_braille_special_to_plaintext_word
     night = NightReader2.new
     cat = [{top: %w{ 0 0 }, mid: %w{ 0 0 }, bot: %w{ 0 0 } }]
     but = [{top: %w{ . . }, mid: %w{ 0 . }, bot: %w{ . . } }]
-    assert_equal "cat", night.braille_special_to_plaintext(cat)
-    assert_equal "but", night.braille_special_to_plaintext(but)
+    assert_equal "cat", night.braille_special_to_plaintext_word(cat)
+    assert_equal "but", night.braille_special_to_plaintext_word(but)
   end
 
-  def test_braille_hash_to_plaintext_char
+  def test_braille_char_to_plaintext_char
     night = NightReader2.new
     a = {top: %w{ 0 . }, mid: %w{ . . }, bot: %w{ . . } }
     expected = "a"
-    computed = night.braille_hash_to_plaintext_char(a)
+    computed = night.braille_char_to_plaintext_char(a)
     assert_equal expected, computed
   end
 
@@ -101,33 +101,59 @@ class TestNightReader2 < Minitest::Test
     assert_equal expected, computed
   end
 
-  def test_braille_string_to_plaintext_string_no_caps_no_specials_no_nums
+  def test_braille_printable_to_plaintext_text_no_caps_no_specials_no_nums
     night = NightReader2.new
     day = NightWriter2.new
     expected = "hey baby how are you "
-    compute1 = day.plaintext_string_to_braille_string(expected)
-    computed = night.braille_string_to_plaintext_string(compute1)
+    compute1 = day.encode_braille_to_text(expected)
+    computed = night.braille_printable_to_plaintext_text(compute1)
     assert_equal expected, computed
   end
 
 
-  def test_braille_string_to_plaintext_string_with_caps_and_specials_and_punctuation
+  def test_braille_printable_to_plaintext_text_with_caps_and_specials_and_punctuation
     night = NightReader2.new
     day = NightWriter2.new
-    expected = "Hello! what is your name? I like you but I don't care. "
-    compute1 = day.plaintext_string_to_braille_string(expected)
-    computed = night.braille_string_to_plaintext_string(compute1)
+    expected = "Hello! what is your name? I like you and I don't even care even care. "
+    compute1 = day.encode_braille_to_text(expected)
+    computed = night.braille_printable_to_plaintext_text(compute1)
     assert_equal expected, computed
   end
 
-  def test_braille_string_to_plaintext_string_with_caps_and_specials_and_numbers
+  def test_braille_printable_to_plaintext_text_with_caps_and_specials_and_numbers
     night = NightReader2.new
     day = NightWriter2.new
     expected = "Hello Jon but 12 when 134 is now "
-    compute1 = day.plaintext_string_to_braille_string(expected)
-    computed = night.braille_string_to_plaintext_string(compute1)
+    compute1 = day.encode_braille_to_text(expected)
+    computed = night.braille_printable_to_plaintext_text(compute1)
     assert_equal expected, computed
   end
 
+  def test_plaintext_text_to_printable
+    night = NightReader2.new
+    text = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
+    expected = "01234567890123456789012345678901234567890123456789012345678901234567890123456789\n0123456789\n"
+    computed = night.plaintext_text_to_printable(text)
+    assert_equal expected, computed
+  end
+
+  def test_decode_braille_to_text_less_than_80
+    night = NightReader2.new
+    day = NightWriter2.new
+    expected = "Turing is so great I can't even feel my hands! Where is the sun? Am I a mole? \n"
+    computed1 = day.encode_braille_to_text(expected)
+    computed = night.decode_braille_to_text(computed1)
+    assert_equal expected, computed
+  end
+
+  def test_decode_braille_to_text_more_than_80
+    night = NightReader2.new
+    day = NightWriter2.new
+    text = "Turing is so great I can't even feel my hands! Where is the sun? Am I a mole? Who are my friends?"
+    expected = "Turing is so great I can't even feel my hands! Where is the sun? Am I a mole? Wh\no are my friends? \n"
+    computed1 = day.encode_braille_to_text(text)
+    computed = night.decode_braille_to_text(computed1)
+    assert_equal expected, computed
+  end
 
 end
